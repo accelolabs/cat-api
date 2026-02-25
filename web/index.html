@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>meowify</title>
+</head>
+<body>
+    <h1>meowify your url</h1>
+    <p>like, actually, for free</p>
+    
+    <div>
+        <input 
+            type="url" 
+            id="url-input" 
+            placeholder="your url here"
+            required
+        >
+        <button id="create-btn" onclick="createLink()">meowify</button>
+    </div>
+    
+    <div id="error"></div>
+    
+    <div id="result" style="display: none;">
+        <p>your meowified link:</p>
+        <div>
+            <a href="#" id="short-link" target="_blank"></a>
+            <button id="copy-btn" onclick="copyToClipboard()">copy</button>
+        </div>
+    </div>
+
+    <script>
+        const apiUrl = window.location.origin;
+        
+        async function createLink() {
+            const urlInput = document.getElementById('url-input');
+            const errorDiv = document.getElementById('error');
+            const resultDiv = document.getElementById('result');
+            
+            errorDiv.innerHTML = '';
+            resultDiv.style.display = 'none';
+            
+            const url = urlInput.value.trim();
+            
+            try {
+                const response = await fetch(`${apiUrl}/meow`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({url})
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error);
+                
+                const linkElement = document.getElementById('short-link');
+                const meowLink = `${apiUrl}/${data.alias}`;
+                linkElement.href = meowLink;
+                linkElement.textContent = meowLink;
+                resultDiv.style.display = 'block';
+                
+                urlInput.value = '';
+            } catch (error) {
+                errorDiv.innerHTML = error.message;
+            }
+        }
+        
+        async function copyToClipboard() {
+            const link = document.getElementById('short-link').href;
+            await navigator.clipboard.writeText(link);
+        }
+        
+        document.getElementById('url-input').addEventListener('keypress', e => {
+            if (e.key === 'Enter') createLink();
+        });
+    </script>
+</body>
+</html>

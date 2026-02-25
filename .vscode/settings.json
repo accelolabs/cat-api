@@ -1,0 +1,5 @@
+{
+    "code-runner.executorMap": {
+        "go": "go run ./cmd/cat-api/$fileName -config=$workspaceRoot/config/local.yaml"
+    }
+}
