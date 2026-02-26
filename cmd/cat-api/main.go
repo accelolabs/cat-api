@@ -36,13 +36,15 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/" {
-			http.ServeFile(w, r, cfg.IndexPath)
-			return
-		}
-		http.NotFound(w, r)
-	})
+	if cfg.IndexPath != "" {
+		mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+			if r.URL.Path == "/" {
+				http.ServeFile(w, r, cfg.IndexPath)
+				return
+			}
+			http.NotFound(w, r)
+		})
+	}
 
 	mux.Handle("POST /meow", middleware.RequestID(save.New(log, storage, cfg.AliasLength, cfg.MaxStretch)))
 	mux.Handle("GET /{alias}", middleware.RequestID(redirect.New(log, storage)))

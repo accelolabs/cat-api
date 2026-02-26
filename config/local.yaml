@@ -2,6 +2,6 @@ env: "local"
 storage_path: "./storage.sqlite"
 http_server:
   index_path: "./web/index.html"
-  address: "localhost:8144"
+  address: "localhost:8888"
   timeout: 4s
   idle_timeout: 60s
