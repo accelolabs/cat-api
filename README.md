@@ -12,6 +12,8 @@
 
 Есть минималистичный фронтенд для этого сервиса ([web/index.html](https://github.com/accelolabs/cat-api/blob/main/web/index.html)). Он может быть указан в конфиге. Тогда будет использоваться root эндпойнт для сервировки html страницы.
 
+Если по какой-то причине вы используете SystemD, то вы можете воспользоваться готовым сервисом ([systemd/meow.service](https://github.com/accelolabs/cat-api/blob/main/systemd/meow.service)).
+
 ## Как использовать?
 
 Сбилдить проект можно командой:
